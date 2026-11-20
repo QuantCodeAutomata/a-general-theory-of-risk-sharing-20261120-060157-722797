@@ -11,9 +11,9 @@ and since gamma_a = 1/beta_a is a decreasing function of beta_a, the
 essential infimum of gamma_a corresponds to the essential SUPREMUM of beta_a:
 Gamma = 1/(mu-ess-sup beta_a). The value function is therefore
 ES_P^{beta}(X) with beta = mu-ess-sup beta_a -- NOT the essential infimum of
-beta_a. (The task's experiment brief computes "beta = ess inf beta_a = 0.1"
-directly in beta-space; this conflates beta_a with the inflation parameter
-gamma_a and is corrected here against the paper's Theorem 3, which is stated
+beta_a. (A naive reading directly in beta-space would instead compute
+"beta = ess inf beta_a = 0.1"; this conflates beta_a with the inflation
+parameter gamma_a and is corrected here against the paper's Theorem 3, which is stated
 in gamma-space with gamma_a in [1, infinity) -- see the direct confirmation in
 Theorem 5 and Example 10, p.21-22, which independently states the
 *essential supremum* of beta_a as the relevant threshold for the same

@@ -11,11 +11,11 @@ The brute-force value of the integral infimal convolution
 
     inf_{(X_a)} (1/M) * sum_a rho_a(X_a)   subject to   sum_a X_a = X
 
-is a convex program (each rho_a is convex). It is solved with ``cvxpy``
-(Context7: the ``cvxpy`` convex-optimization DSL; for the expected-shortfall
-case the per-agent objective uses cvxpy's built-in ``cp.cvar(x, beta)`` atom
-with ``beta = 1 - alpha``, which matches the paper's ES^alpha of Example 9
-exactly: the average of the worst alpha-fraction of outcomes).
+is a convex program (each rho_a is convex). It is solved with the ``cvxpy``
+convex-optimization library; for the expected-shortfall case the per-agent
+objective uses cvxpy's built-in ``cp.cvar(x, beta)`` atom with
+``beta = 1 - alpha``, which matches the paper's ES^alpha of Example 9
+exactly: the average of the worst alpha-fraction of outcomes.
 
 A finite set of M agents with uniform weight 1/M approximates both the
 continuum of agents (Riemann sum of the integral, M large) and the classical

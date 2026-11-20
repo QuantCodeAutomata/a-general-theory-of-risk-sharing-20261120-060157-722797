@@ -8,9 +8,9 @@ parametrizes the convex conjugate of the entropic risk measure. These
 formulas are specific to the paper's sign and normalization conventions
 (risk measures of a random "loss/endowment" X, with ess sup rather than
 "-X" convention), so they are implemented from scratch rather than taken
-from a generic risk-analytics library (Context7 was consulted for
-``quantstats``/``arch``-style CVaR utilities and confirmed none reproduce
-this exact dual definition and sign convention).
+from a generic risk-analytics library: standard ``quantstats``/``arch``-style
+CVaR utilities use the opposite loss/return sign convention and do not expose
+this exact dual (Rockafellar-Uryasev) definition.
 
 For the convex programs in ``src/risk_sharing.py`` the per-agent CVaR is
 instead computed with the ``cvxpy`` atom ``cp.cvar(x, beta)``, since its
