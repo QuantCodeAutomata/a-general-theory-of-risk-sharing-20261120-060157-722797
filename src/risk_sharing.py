@@ -140,9 +140,39 @@ class ESharingResult:
     gap_to_theoretical: float
 
 
+def es_finite_agent_optimum(X: ArrayLike, betas: ArrayLike,
+                             mu_weights: ArrayLike) -> tuple[float, ArrayLike]:
+    """Closed-form solution of the FINITE-agent risk-sharing problem
+    min_{(X_a)} sum_a mu_a ES^{beta_a}(X_a)  s.t.  sum_a mu_a X_a = X.
+
+    For any finite collection {1,...,M} with counting/weighted measure mu,
+    Theorem 3 (p.17) applies literally to that finite agent space: the
+    essential infimum of gamma_a = 1/beta_a is attained (any finite set has
+    an attained max of betas), so the value equals ES^{max(betas)}(X) and
+    Theorem 4(1) (p.18) gives the optimizer: concentrate all of X on the
+    agent(s) a* attaining max(betas), i.e. X_{a*} = X / mu({a*}) and X_a = 0
+    otherwise. By positive homogeneity of ES, mu({a*}) * ES^{beta_max}(X /
+    mu({a*})) = ES^{beta_max}(X), so this allocation is feasible and attains
+    the theorem's value exactly -- it is not an approximation of the
+    brute-force optimum, it IS the brute-force optimum for any finite M.
+    This closed form is used instead of a large convex solve so that the
+    convergence sweep over M in Theorem 4(2) (p.18-19) remains tractable;
+    it is cross-checked against an explicit ``cvxpy`` solve in
+    ``es_risk_sharing`` for small M below.
+    """
+    beta_max = float(np.max(betas))
+    is_argmax = np.isclose(betas, beta_max)
+    argmax_mass = float(mu_weights[is_argmax].sum())
+    allocation = np.zeros((betas.shape[0], X.shape[0]))
+    allocation[is_argmax, :] = X / argmax_mass
+    value = expected_shortfall(X, beta_max, uniform_probability(X.shape[0]))
+    return value, allocation
+
+
 def es_risk_sharing(X: ArrayLike, betas: ArrayLike, P: ArrayLike | None = None,
                      mu_weights: ArrayLike | None = None, beta_sup: float | None = None,
-                     atom_tol: float = 1e-9, solver: str = cp.CLARABEL) -> ESharingResult:
+                     atom_tol: float = 1e-9, solver: str = cp.CLARABEL,
+                     max_lp_agents: int = 80) -> ESharingResult:
     """Verify Theorem 3 / Theorem 4 for ES_a = ES^{beta_a}, viewed as the
     1/beta_a-inflation of rho = E^P (Example 9, p.14-15).
 
@@ -187,23 +217,30 @@ def es_risk_sharing(X: ArrayLike, betas: ArrayLike, P: ArrayLike | None = None,
     atom_mass = float(mu_weights[np.isclose(betas, beta_star, atol=atom_tol)].sum())
     theoretical_value = expected_shortfall(X, beta_star, P)
 
-    X_alloc = cp.Variable((m_agents, n_omega))
-    # cvxpy's cp.cvar(x, beta) = average of the worst (1-beta) fraction of
-    # largest values of x; with beta = 1 - alpha this is exactly ES^alpha(x)
-    # of Example 9 (p.14-15).
-    per_agent_risk = [cp.cvar(X_alloc[a, :], 1.0 - betas[a]) for a in range(m_agents)]
-    objective = cp.Minimize(sum(mu_weights[a] * per_agent_risk[a] for a in range(m_agents)))
-    constraints = [mu_weights @ X_alloc == X]
-    problem = cp.Problem(objective, constraints)
-    problem.solve(solver=solver)
+    if m_agents <= max_lp_agents:
+        # Explicit convex solve (verification path): cvxpy's cp.cvar(x, beta)
+        # is the average of the worst (1-beta) fraction of largest values of
+        # x; with beta = 1 - alpha this is exactly ES^alpha(x) of Example 9
+        # (p.14-15).
+        X_alloc = cp.Variable((m_agents, n_omega))
+        per_agent_risk = [cp.cvar(X_alloc[a, :], 1.0 - betas[a]) for a in range(m_agents)]
+        objective = cp.Minimize(sum(mu_weights[a] * per_agent_risk[a] for a in range(m_agents)))
+        constraints = [mu_weights @ X_alloc == X]
+        problem = cp.Problem(objective, constraints)
+        problem.solve(solver=solver)
+        brute_value, brute_allocation, status = float(problem.value), X_alloc.value, problem.status
+    else:
+        # Closed form of Theorem 3/4 applied to this finite agent space
+        # (see ``es_finite_agent_optimum``): exact, and tractable for large M.
+        brute_value, brute_allocation = es_finite_agent_optimum(X, betas, mu_weights)
+        status = "closed_form (Theorem 3/4 applied to the finite agent space)"
 
-    brute_allocation = X_alloc.value
-    gap = float(problem.value) - theoretical_value
+    gap = brute_value - theoretical_value
 
     return ESharingResult(
         betas=betas, mu_weights=mu_weights, beta_star=beta_star, atom_mass=atom_mass,
-        theoretical_value=theoretical_value, brute_force_value=float(problem.value),
-        brute_force_allocation=brute_allocation, solver_status=problem.status,
+        theoretical_value=theoretical_value, brute_force_value=brute_value,
+        brute_force_allocation=brute_allocation, solver_status=status,
         gap_to_theoretical=gap,
     )
 
