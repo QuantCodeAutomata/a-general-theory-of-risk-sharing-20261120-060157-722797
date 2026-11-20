@@ -1,0 +1,48 @@
+{
+  "experiment": "exp1_entropic_risk_sharing",
+  "theorem": "Theorem 2 / Example 8 (dilated / entropic risk measures)",
+  "continuum_case": {
+    "n_omega": 500,
+    "m_agents": 200,
+    "Gamma": 1.5,
+    "theoretical_value": 0.5229076055636488,
+    "brute_force_value": 0.522907605563663,
+    "value_abs_diff": 1.4210854715202004e-14,
+    "max_allocation_abs_diff": 0.18323122726600305,
+    "constraint_violation": 1.2878587085651816e-14,
+    "solver_status": "optimal",
+    "dual_max_abs_diff": 2.220446049250313e-16,
+    "dual_sup_representation_value": 0.5229076055636488,
+    "dual_sup_representation_argmax_gap": 0.0
+  },
+  "discrete_case": {
+    "n_agents": 5,
+    "Gamma": 1.6,
+    "theoretical_value": 0.306877259788401,
+    "brute_force_value": 0.3068772597883398,
+    "value_abs_diff": 6.122879980807738e-14,
+    "max_allocation_abs_diff": 0.0006214512246713877,
+    "constraint_violation": 4.920508445138694e-13,
+    "solver_status": "optimal"
+  },
+  "convergence_sweep": {
+    "m_grid": [
+      5,
+      20,
+      100,
+      200
+    ],
+    "value_abs_diffs": [
+      7.971401316808624e-13,
+      4.884981308350689e-15,
+      7.327471962526033e-15,
+      1.4210854715202004e-14
+    ],
+    "allocation_abs_diffs": [
+      0.08797636682455368,
+      0.14344703563895211,
+      0.17782763613762098,
+      0.18323122726600305
+    ]
+  }
+}
