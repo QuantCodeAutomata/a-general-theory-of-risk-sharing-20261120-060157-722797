@@ -1,0 +1,151 @@
+{
+  "experiment": "exp3_pareto_nonexistence",
+  "theorem": "Theorem 5 / Example 10 / Proposition 6 (Pareto efficiency with ES preferences)",
+  "precondition_check": {
+    "beta": 0.5,
+    "es_beta": 0.7505324648693552,
+    "rows": [
+      {
+        "alpha": 0.1,
+        "es_alpha": 0.9486729241269772,
+        "differs_from_es_beta": true
+      },
+      {
+        "alpha": 0.1875,
+        "es_alpha": 0.9048894725999702,
+        "differs_from_es_beta": true
+      },
+      {
+        "alpha": 0.275,
+        "es_alpha": 0.862805764691051,
+        "differs_from_es_beta": true
+      },
+      {
+        "alpha": 0.36249999999999993,
+        "es_alpha": 0.8196739626572356,
+        "differs_from_es_beta": true
+      },
+      {
+        "alpha": 0.45,
+        "es_alpha": 0.7758180480590249,
+        "differs_from_es_beta": true
+      }
+    ],
+    "precondition_holds": true
+  },
+  "continuum_nonexistence_case": {
+    "m_agents": 500,
+    "max_beta_in_sample": 0.49960000000000004,
+    "beta_sup": 0.5,
+    "atom_mass_at_sup": 0.0,
+    "theoretical_value": 0.7505324648693552,
+    "finite_agent_optimum": 0.7507366489432069,
+    "gap_to_theoretical": 0.00020418407385169868
+  },
+  "pareto_improvement_demo": {
+    "n_steps": 40,
+    "risk_trace": [
+      0.8499286517112864,
+      0.848042264859422,
+      0.8461936057445952,
+      0.8443819198120667,
+      0.8426064675981866,
+      0.840866524428585,
+      0.8391613801223742,
+      0.83749033870229,
+      0.8358527181106051,
+      0.8342478499307563,
+      0.8326750791145031,
+      0.8311337637145748,
+      0.8296232746226451,
+      0.8281429953125539,
+      0.8266923215886646,
+      0.8252706613392536,
+      0.8238774342948305,
+      0.8225120717912956,
+      0.8211740165378317,
+      0.8198627223894372,
+      0.8185776541240103,
+      0.8173182872238923,
+      0.8160841076617757,
+      0.8148746116909026,
+      0.8136893056394469,
+      0.8125277057090196,
+      0.8113893377772012,
+      0.8102737372040189,
+      0.8091804486422999,
+      0.8081090258518167,
+      0.807059031517142,
+      0.8060300370691615,
+      0.8050216225101403,
+      0.8040333762422993,
+      0.8030648948998154,
+      0.8021157831841813,
+      0.8011856537028592,
+      0.8002741268111639,
+      0.7993808304573026,
+      0.7985054000305185,
+      0.7976474782122699
+    ],
+    "finite_agent_optimum": 0.7507366489432069,
+    "is_monotone_nonincreasing": true,
+    "final_gap_to_finite_optimum": 0.04691082926906298
+  },
+  "finite_agent_convergence": {
+    "n_grid": [
+      5,
+      10,
+      20,
+      50,
+      100,
+      250
+    ],
+    "theoretical_continuum_value": 0.7505324648693552,
+    "rows": [
+      {
+        "n_agents": 5,
+        "max_beta": 0.5,
+        "optimal_value": 0.7505324648693552,
+        "gap_to_continuum_value": 0.0,
+        "optimizing_atom_mass": 0.2
+      },
+      {
+        "n_agents": 10,
+        "max_beta": 0.5,
+        "optimal_value": 0.7505324648693552,
+        "gap_to_continuum_value": 0.0,
+        "optimizing_atom_mass": 0.1
+      },
+      {
+        "n_agents": 20,
+        "max_beta": 0.5,
+        "optimal_value": 0.7505324648693552,
+        "gap_to_continuum_value": 0.0,
+        "optimizing_atom_mass": 0.05
+      },
+      {
+        "n_agents": 50,
+        "max_beta": 0.5,
+        "optimal_value": 0.7505324648693552,
+        "gap_to_continuum_value": 0.0,
+        "optimizing_atom_mass": 0.02
+      },
+      {
+        "n_agents": 100,
+        "max_beta": 0.5,
+        "optimal_value": 0.7505324648693552,
+        "gap_to_continuum_value": 0.0,
+        "optimizing_atom_mass": 0.01
+      },
+      {
+        "n_agents": 250,
+        "max_beta": 0.5,
+        "optimal_value": 0.7505324648693552,
+        "gap_to_continuum_value": 0.0,
+        "optimizing_atom_mass": 0.004
+      }
+    ],
+    "gap_nonincreasing": true,
+    "atom_mass_monotone_decreasing": true
+  }
+}
